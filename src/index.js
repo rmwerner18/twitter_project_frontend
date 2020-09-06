@@ -7,41 +7,40 @@ document.addEventListener("DOMContentLoaded", e => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
         .then(data => {
-            iterateArray(data)
+            pushTweetsIntoAllWords(data)
             const wordCount = countOccurrences(allWords)
-            iterateAllWords(wordCount)
+            makeAllWordsAppearOnPage(wordCount)
         })
     }
 
-    const iterateArray = (array) => {
-        for (const tweetText of array) {
-            splitText(tweetText)
+    const pushTweetsIntoAllWords = (tweets) => {
+        for (const tweet of tweets) {
+            pushTweetIntoAllWords(tweet)
         }
     }
 
-    const splitText = (obj) => {
-        const text = obj.text 
-        const parseText = text.replace(/[^A-Za-z- ']+/g, '')
-        const words = parseText.toLowerCase()
-        const wordArray = words.split(" ")
+    const pushTweetIntoAllWords = (tweet) => {
+        const tweetText = tweet.text 
+        const tweetTextWords = tweetText.replace(/[^A-Za-z- ']+/g, '')
+        const tweetTextWordsLowerCase = tweetTextWords.toLowerCase()
+        const wordArray = tweetTextWordsLowerCase.split(" ")
         for (const word of wordArray) {
             allWords.push(word)
         }     
     }
 
-
-    const iterateAllWords = (wordArray) => {
+    const makeAllWordsAppearOnPage = (wordArray) => {
         for (const word in wordArray) {
-            appendWord(word, wordArray)
+            makeWordAppearOnPage(word, wordArray)
         }
     }
     
-    const appendWord = (word, wordCount) => {
-        const div = document.createElement("div")
-        div.innerText = word + ' ' + wordCount[word]
+    const makeWordAppearOnPage = (word, wordCount) => {
+        const wordAndCountDiv = document.createElement("div")
+        wordAndCountDiv.innerText = word + ' ' + wordCount[word]
         const wordContainer = document.getElementById("words-container")
 
-        wordContainer.append(div)
+        wordContainer.append(wordAndCountDiv)
     }
 
     const countOccurrences = arr => {
@@ -49,14 +48,14 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const submitHandler = () => {
-        const form = document.getElementById('handle-search-bar')
-        form.addEventListener("submit", e => {
+        const handleForm = document.getElementById('handle-search-bar')
+        handleForm.addEventListener("submit", e => {
             e.preventDefault()
-            const handle = form.handle.value
+            const handle = handleForm.handle.value
+            const number = parseInt(handleForm.amount.value)
+
             const tweetContainer = document.getElementById("tweets-container")
             tweetContainer.innerHTML = ""
-            
-            const number = parseInt(form.amount.value)
             tweetContainer.append(createATag(number, handle))
             tweetContainer.append(createTweetWidget())
             
