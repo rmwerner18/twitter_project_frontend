@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", e => {
     let allWords = []
     let wordCount = []
     let wordCloudArray = []
+    let wordContainer = document.getElementById('words-container')
 
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
@@ -42,7 +43,6 @@ document.addEventListener("DOMContentLoaded", e => {
     const makeWordAppearOnPage = (word, wordCount) => {
         const wordAndCountDiv = document.createElement("div")
         wordAndCountDiv.innerText = word + ' ' + wordCount[word]
-        const wordContainer = document.getElementById("words-container")
 
         wordContainer.append(wordAndCountDiv)
     }
@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", e => {
             const handle = handleForm.handle.value
             const number = parseInt(handleForm.amount.value)
 
+            allWords = []
+            wordContainer.innerHTML = ""
             const tweetContainer = document.getElementById("tweets-container")
             tweetContainer.innerHTML = ""
             tweetContainer.append(createATag(number, handle))
@@ -86,11 +88,11 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const makeWordCloud = (list) => {
-        console.log(list)
-        WordCloud(document.getElementById('words-container'), { list: list } );
+        WordCloud(wordContainer, { list: list } );
     }
 
     const turnAllWordsIntoArray = (wordCount) => {
+        wordCloudArray = []
         for (word in wordCount) {
             wordCloudArray.push([word, (parseInt(wordCount[word]) * 10)])
         }
