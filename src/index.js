@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", e => {
     console.log("page loaded")
     const baseUrl = 'http://localhost:3000/tweets'
+    let allWords = []
 
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
-        .then(iterateArray)
+        .then(data => {
+            iterateArray(data)
+            const wordCount = countOccurrences(allWords)
+            iterateAllWords(wordCount)
+        })
     }
 
     const iterateArray = (array) => {
@@ -19,11 +24,29 @@ document.addEventListener("DOMContentLoaded", e => {
         const parseText = text.replace(/[^A-Za-z- ']+/g, '')
         const words = parseText.toLowerCase()
         const wordArray = words.split(" ")
-        const counts = countOccurrences(wordArray)
+        for (const word of wordArray) {
+            allWords.push(word)
+        }     
+    }
+
+
+    const iterateAllWords = (wordArray) => {
+        for (const word in wordArray) {
+            appendWord(word, wordArray)
+        }
     }
     
+    const appendWord = (word, wordCount) => {
+        const div = document.createElement("div")
+        div.innerText = word + ' ' + wordCount[word]
+        const wordContainer = document.getElementById("words-container")
 
-    const countOccurrences = arr => arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {});
+        wordContainer.append(div)
+    }
+
+    const countOccurrences = arr => {
+        return arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {});
+    }
 
     const submitHandler = () => {
         const form = document.getElementById('handle-search-bar')
