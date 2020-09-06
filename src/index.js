@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
     const turnAllWordsIntoArray = (wordCount) => {
         for (word in wordCount) {
-            wordCloudArray.push([word, wordCount[word]])
+            wordCloudArray.push([word, (parseInt(wordCount[word]) * 10)])
         }
         return wordCloudArray
     }
