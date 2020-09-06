@@ -2,14 +2,18 @@ document.addEventListener("DOMContentLoaded", e => {
     console.log("page loaded")
     const baseUrl = 'http://localhost:3000/tweets'
     let allWords = []
+    let wordCount = []
+    let wordCloudArray = []
 
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
         .then(data => {
             pushTweetsIntoAllWords(data)
-            const wordCount = countOccurrences(allWords)
+            wordCount = countOccurrences(allWords)
             makeAllWordsAppearOnPage(wordCount)
+            wordCloudArray = turnAllWordsIntoArray(wordCount)
+            makeWordCloud(wordCloudArray)
         })
     }
 
@@ -79,6 +83,18 @@ document.addEventListener("DOMContentLoaded", e => {
         a.dataset.tweetLimit = number
         a.href = `https://twitter.com/${handle}`
         return a  
+    }
+
+    const makeWordCloud = (list) => {
+        console.log(list)
+        WordCloud(document.getElementById('words-container'), { list: list } );
+    }
+
+    const turnAllWordsIntoArray = (wordCount) => {
+        for (word in wordCount) {
+            wordCloudArray.push([word, wordCount[word]])
+        }
+        return wordCloudArray
     }
 
     submitHandler()
