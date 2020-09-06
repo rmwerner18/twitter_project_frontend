@@ -20,10 +20,11 @@ document.addEventListener("DOMContentLoaded", e => {
         const tweetTextWordsLowerCase = tweetTextWords.toLowerCase()
         const wordArray = tweetTextWordsLowerCase.split(" ")
         const counts = countOccurrences(wordArray)
+        console.log(counts)
     }
     
     const countOccurrences = (arr) => {
-        arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})
+        return arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})
     }
 
     const submitHandler = () => {
