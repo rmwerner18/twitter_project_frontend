@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", e => {
         })
     }
 
-    const iterateArray = (array) => {
-        for (const tweetText of array) {
-            splitText(tweetText)
+    const iterateArray = (tweets) => {
+        for (const tweet of tweets) {
+            splitText(tweet)
         }
     }
 
@@ -49,14 +49,14 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const submitHandler = () => {
-        const form = document.getElementById('handle-search-bar')
-        form.addEventListener("submit", e => {
+        const handleForm = document.getElementById('handle-search-bar')
+        handleForm.addEventListener("submit", e => {
             e.preventDefault()
-            const handle = form.handle.value
+            const handle = handleForm.handle.value
+            const number = parseInt(handleForm.amount.value)
+
             const tweetContainer = document.getElementById("tweets-container")
             tweetContainer.innerHTML = ""
-            
-            const number = parseInt(form.amount.value)
             tweetContainer.append(createATag(number, handle))
             tweetContainer.append(createTweetWidget())
             
