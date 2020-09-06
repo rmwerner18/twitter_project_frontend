@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", e => {
         const words = parseText.toLowerCase()
         const wordArray = words.split(" ")
         const counts = countOccurrences(wordArray)
-        
     }
     
 
