@@ -5,35 +5,36 @@ document.addEventListener("DOMContentLoaded", e => {
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
-        .then(iterateArray)
+        .then(getWordOccurrences)
     }
 
-    const iterateArray = (array) => {
-        for (const tweetText of array) {
-            splitText(tweetText)
+    const getWordOccurrences = (tweets) => {
+        for (const tweet of tweets) {
+            countOccurrencesInTweet(tweet)
         }
     }
 
-    const splitText = (obj) => {
-        const text = obj.text 
-        const parseText = text.replace(/[^A-Za-z- ']+/g, '')
-        const words = parseText.toLowerCase()
-        const wordArray = words.split(" ")
+    const countOccurrencesInTweet = (tweet) => {
+        const tweetText = tweet.text 
+        const tweetTextWords = tweetText.replace(/[^A-Za-z- ']+/g, '')
+        const tweetTextWordsLowerCase = tweetTextWords.toLowerCase()
+        const wordArray = tweetTextWordsLowerCase.split(" ")
         const counts = countOccurrences(wordArray)
     }
     
-
-    const countOccurrences = arr => arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {});
+    const countOccurrences = (arr) => {
+        arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})
+    }
 
     const submitHandler = () => {
-        const form = document.getElementById('handle-search-bar')
-        form.addEventListener("submit", e => {
+        const handleForm = document.getElementById('handle-search-bar')
+        handleForm.addEventListener("submit", e => {
             e.preventDefault()
-            const handle = form.handle.value
+            const handle = handleForm.handle.value
+            const number = parseInt(handleForm.amount.value)
+
             const tweetContainer = document.getElementById("tweets-container")
             tweetContainer.innerHTML = ""
-            
-            const number = parseInt(form.amount.value)
             tweetContainer.append(createATag(number, handle))
             tweetContainer.append(createTweetWidget())
             
