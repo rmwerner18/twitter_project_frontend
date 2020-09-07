@@ -27,11 +27,35 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const showDefinitionAndSynonyms = (wordObject) => {
-        const div = document.createElement('div')
-        div.id = "definition-container"
-        div.innerText = wordObject.results[0].definition
-        document.getElementById('def-layout').append(div)
-        console.log(wordObject.word)
+        const masterDiv = document.createElement('div')
+        masterDiv.id = "definition-container"
+        document.getElementById('def-layout').append(masterDiv)
+        let results = wordObject.results
+        const nameDiv = document.createElement('div')
+        nameDiv.id = "word-name"
+        const defDiv = document.createElement('div')
+        defDiv.id = "word-def"
+        const synDiv = document.createElement('div')
+        synDiv.id = "word-syn"
+        nameDiv.innerText = wordObject.word 
+        for (const result of results) {
+            defDiv.insertAdjacentHTML('beforeend',`
+            <p> Defintion: ${result.definition}</p>
+            <p> Part of Speech: ${result.partOfSpeech}</p>
+            `)
+            let syns = result.synonyms
+            console.log(syns)
+            const ul = document.createElement('ul')
+            if (syns) {
+                for (const word of syns) {
+                    const li = document.createElement('li')
+                    li.innerText = word
+                    ul.append(li)
+                }
+            }
+            synDiv.append(ul) 
+        }
+        masterDiv.append(nameDiv, defDiv, synDiv)
     }
 
     const clickHandler = () => {
@@ -121,7 +145,7 @@ document.addEventListener("DOMContentLoaded", e => {
     const turnAllWordsIntoArray = (wordCount) => {
         wordCloudArray = []
         for (word in wordCount) {
-            wordCloudArray.push([word, (parseInt(wordCount[word]) * 10)])
+            wordCloudArray.push([word, (parseInt(wordCount[word]) * 5)])
         }
         return wordCloudArray
     }
