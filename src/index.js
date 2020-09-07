@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", e => {
         const wordAndCountDiv = document.createElement("div")
         wordAndCountDiv.innerText = word + ' ' + wordCount[word]
         const wordContainer = document.getElementById("words-container")
-
         wordContainer.append(wordAndCountDiv)
     }
 
