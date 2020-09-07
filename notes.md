@@ -36,6 +36,29 @@ Things we need to do:
         -else 
             -no save, when trying to save, open a register option or something 
 
+Goals for 9/7
+
+All promary goals met
+Secondary goals:
+    go back from the definition page
+    Refactoring in general
+    Nicer styling for borders/colors on main page 
+        -Larger search bar
+        -Custom buttons maybe
+
+Goals for 9/8
+
+go back from the definition page
+Authorize with Twitter account
+Basic authorization done
+User model building
+WordBank model Building 
+Join table model building 
+Saving words 
+Mailer set up to send someone list of synonyms in their word bank at the end of their session
+
+
+
 
 styling of search bar: 
     .parent of search bar {
