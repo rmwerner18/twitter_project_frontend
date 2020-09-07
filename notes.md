@@ -55,6 +55,13 @@ Things we need to do:
             -no save, when trying to save, open a register option or something 
 
 
+styling of search bar: 
+    .parent of search bar {
+        display: grid;
+        place-items: center;
+    }
+
+    on click ---> change to what we have now only if class is 
 
 Stretch goals:
 -Random poem 

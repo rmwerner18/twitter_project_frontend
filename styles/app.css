@@ -14,7 +14,7 @@
     overflow-y: hidden
 }
 
-#search-container {
+.other-search {
     margin-top: 0;
     height: 50px;
     width: 100vw;
@@ -25,3 +25,9 @@
     z-index: 1;
 }
 
+.first-search {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

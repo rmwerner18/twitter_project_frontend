@@ -4,14 +4,16 @@ document.addEventListener("DOMContentLoaded", e => {
     let allWords = []
     let wordCount = []
     let wordCloudArray = []
+    let wordsWithNoArticles = []
     let wordContainer = document.getElementById('words-container')
+    let searchContainer = document.getElementById('search-container')
 
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
         .then(data => {
             pushTweetsIntoAllWords(data)
-            wordCount = countOccurrences(allWords)
+            wordCount = countOccurrences(wordsWithNoArticles)
             makeAllWordsAppearOnPage(wordCount)
             wordCloudArray = turnAllWordsIntoArray(wordCount)
             makeWordCloud(wordCloudArray)
@@ -31,7 +33,19 @@ document.addEventListener("DOMContentLoaded", e => {
         const wordArray = tweetTextWordsLowerCase.split(" ")
         for (const word of wordArray) {
             allWords.push(word)
-        }     
+        }
+        checkWordsForArticles(allWords)
+    }
+
+    const checkWordsForArticles = (wordArray) => {
+        let articles = ['if', 'of', 'the', 'for', 'and', 'a', 'to', 'be', 'rt', 'by', 'in', '', 'is']
+        for (const word of wordArray) {
+            if (articles.includes(word)) {
+                console.log(word)
+            } else {
+                wordsWithNoArticles.push(word)
+            }
+        }
     }
 
     const makeAllWordsAppearOnPage = (wordArray) => {
@@ -54,9 +68,9 @@ document.addEventListener("DOMContentLoaded", e => {
         const handleForm = document.getElementById('handle-search-bar')
         handleForm.addEventListener("submit", e => {
             e.preventDefault()
+            searchContainer.className = "other-search"
             const handle = handleForm.handle.value
             const number = parseInt(handleForm.amount.value)
-
             allWords = []
             wordContainer.innerHTML = ""
             const tweetContainer = document.getElementById("tweets-container")
