@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", e => {
         .then(data => {
             pushTweetsIntoAllWords(data)
             wordCount = countOccurrences(wordsWithNoArticles)
-            makeAllWordsAppearOnPage(wordCount)
             wordCloudArray = turnAllWordsIntoArray(wordCount)
             makeWordCloud(wordCloudArray)
         })
@@ -73,18 +72,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 wordsWithNoArticles.push(word)
             }
         }
-    }
-
-    const makeAllWordsAppearOnPage = (wordArray) => {
-        for (const word in wordArray) {
-            makeWordAppearOnPage(word, wordArray)
-        }
-    }
-    
-    const makeWordAppearOnPage = (word, wordCount) => {
-        const wordAndCountDiv = document.createElement("div")
-        wordAndCountDiv.innerText = word + ' ' + wordCount[word]
-        wordContainer.append(wordAndCountDiv)
     }
 
     const countOccurrences = arr => {
