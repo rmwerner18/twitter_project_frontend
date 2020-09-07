@@ -18,14 +18,6 @@ add all arrays together after parsing
 and then split and get count
 
 
-3. if pattern matches RT/https/filler words, delete, obj[word],
-for each in obj,
-
-    make a div or ul and li elements, 
-    append each one to those elements
-    render to page 
-
-
 
 Things we've done: 
 -Dynamic API calls to twitter
@@ -35,16 +27,6 @@ Things we've done:
 
 
 Things we need to do:
--Sort words in array better, i.e. remove filler words (and, of, a ,the ,rt) if == string pattern/strings then .remove array[key]
-    -make array
-    -.includes?(word of word array) == http === rt
-        -splice from thing 
-
--Render words onto page
-    -Styling for this is important, some styling
-        - Grid with two rows two columns, first row short has both parts = to the word name, second row hastwo parts one for definitions one for synonyms. 
-        -Figure out way to get word cloud back 
-        -Size arg, first time it shows up we make it 20, when class changes we change that to smaller number 
 
 -User model on backend 
     -Log in authorizations (devise)
