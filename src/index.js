@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", e => {
     console.log("page loaded")
     const baseUrl = 'http://localhost:3000/tweets'
+    const wordBaseUrl = 'http://localhost:3000/words/'
     let allWords = []
     let wordCount = []
     let wordCloudArray = []
@@ -17,6 +18,32 @@ document.addEventListener("DOMContentLoaded", e => {
             makeAllWordsAppearOnPage(wordCount)
             wordCloudArray = turnAllWordsIntoArray(wordCount)
             makeWordCloud(wordCloudArray)
+        })
+    }
+
+    const fetchWordData = (word) => {
+        fetch(wordBaseUrl + `?word=${word}` )
+        .then(res => res.json())
+        .then(showDefinitionAndSynonyms)
+    }
+
+    const showDefinitionAndSynonyms = (wordObject) => {
+        const div = document.createElement('div')
+        div.id = "definition-container"
+        div.innerText = wordObject.results[0].definition
+        document.getElementById('def-layout').append(div)
+        console.log(wordObject.word)
+    }
+
+    const clickHandler = () => {
+        document.addEventListener('click', e => {
+            if (e.target.matches('span')) {
+                let layout = document.getElementById('no-def-layout')
+                layout.id = 'def-layout'
+                document.getElementById("handle-search-bar").style.display = 'none'
+                let word = e.target.textContent
+                fetchWordData(word)
+            }
         })
     }
 
@@ -113,4 +140,5 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     submitHandler()
+    clickHandler()
 })

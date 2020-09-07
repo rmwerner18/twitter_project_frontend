@@ -1,6 +1,19 @@
-#styling {
+#no-def-layout {
     display: grid;
     grid-template-columns: minmax(250px, 25%) auto;
+}
+
+#def-layout {
+    display: grid;
+    grid-template-columns: minmax(250px, 25%) auto minmax(250px, 50%);
+}
+
+#definition-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
 }
 
 #tweets-container {
