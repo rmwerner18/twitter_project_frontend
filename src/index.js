@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", e => {
     let wordsWithNoArticles = []
     let wordContainer = document.getElementById('words-container')
     let searchContainer = document.getElementById('search-container')
+    let definitionContainer = document.getElementById('definition-container')
+    let header = document.getElementById('header')
+
     let handle 
     let number
 
@@ -18,6 +21,7 @@ document.addEventListener("DOMContentLoaded", e => {
             pushTweetsIntoFilteredArray(data)
             wordCount = countOccurrences(wordsWithNoArticles)
             wordCloudArray = turnWordsIntoCloudArray(wordCount)
+            console.log(wordCloudArray)
             makeWordCloud(wordCloudArray)
         })
     }
@@ -79,16 +83,18 @@ document.addEventListener("DOMContentLoaded", e => {
         const synDiv = createElementWithId('div', 'word-syn')
         let button = createElementWithId('button', 'exit-button')
         masterDiv.append(button)
-        button.innerText = "X"
+        button.innerText = ">"
         document.getElementById('def-layout').append(masterDiv)
         let results = wordObject.results
         nameDiv.innerText = wordObject.word 
         for (const result of results) {
+            const singleSynDiv = createElementWithId('div', 'single-syn')
             createDefinitionDivs(result, defDiv)
             let syns = result.synonyms
             const ul = document.createElement('ul')
+            singleSynDiv.append(ul)
             if (syns) {createSynonymsLis(ul, syns)}
-            synDiv.append(ul) 
+            synDiv.append(singleSynDiv)
         }
         masterDiv.append(nameDiv, defDiv, synDiv)
     }
@@ -103,12 +109,14 @@ document.addEventListener("DOMContentLoaded", e => {
                 document.getElementById("handle-search-bar").style.display = 'none'
                 let word = e.target.textContent
                 fetchWordData(word)
-            } else if (e.target.matches('button') || e.target.matches) {
+            } else if (e.target.matches('button')) {
                 console.log('hey')
                 let layout = document.getElementById('def-layout')
                 document.getElementById('definition-container').remove()
                 layout.id = 'no-def-layout'
                 wordContainer.style.backgroundColor = 'white'
+                document.getElementById("handle-search-bar").style.display = 'flex'
+                wordContainer.style.zIndex = '0'
             }
         })
     }
@@ -127,6 +135,9 @@ document.addEventListener("DOMContentLoaded", e => {
 
     const displayMainPage = (handle, number) => {
         allWords = []
+        wordCount = []
+        wordsWithNoArticles = []
+        wordCloudArray = [] 
         wordContainer.innerHTML = ""
         const tweetContainer = document.getElementById("tweets-container")
         tweetContainer.innerHTML = ""
@@ -171,8 +182,10 @@ document.addEventListener("DOMContentLoaded", e => {
 
     const createDefinitionDivs = (resultObject, defDiv) => {
         defDiv.insertAdjacentHTML('beforeend',`
-        <p> Defintion: ${resultObject.definition}</p>
-        <p> Part of Speech: ${resultObject.partOfSpeech}</p>
+        <div class="single-def">
+            <p> Defintion: ${resultObject.definition}</p>
+            <p> Part of Speech: ${resultObject.partOfSpeech}</p>
+        </div>
         `)
     }
 

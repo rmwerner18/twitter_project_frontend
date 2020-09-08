@@ -2,6 +2,9 @@
     display: grid;
     grid-template-columns: minmax(250px, 25%) auto;
 }
+body {
+    margin: 0 0 0 0;
+}
 
 #def-layout {
     display: grid;
@@ -12,17 +15,23 @@
     overflow: scroll;
     height: 100vh;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 20px repeat(2, 1fr);
     grid-template-rows: 50px 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
     grid-template-areas: 
-    "name name"
-    "def syn";
+    "but name name"
+    "but def syn";
+}
+
+span {
+    padding: 10px 10px 10px 10px;
+    z-index: -1;
 }
 
 #word-name {
     grid-area: name;
+    max-height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,15 +58,22 @@
 #words-container {
     overflow: scroll;
     height: 100vh;
+    opacity: .9;
 }
 
-/* .header {
+#header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
-    text-align: center;
-    background: #1abc9c;
-    color: white;
+    background: #a0aca9;
+    color: red;
     font-size: 10px;
-  } */
+    position: fixed;
+    width: 100vw;
+    height: 60px;
+    z-index: 2;
+}
 
 .other-search {
     margin-top: 0;
@@ -78,9 +94,20 @@
 }
 
 #exit-button {
+    grid-area: but;
     margin-top: 0;
     z-index: 1;
     display: flex;
-    align-items: top;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-def {
+    height: 200px;
+    width: 100%; 
+}
+
+#single-syn {
+    height: 200px;
+    width: 100%;
 }
