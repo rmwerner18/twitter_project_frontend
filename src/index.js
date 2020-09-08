@@ -13,70 +13,20 @@ document.addEventListener("DOMContentLoaded", e => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
         .then(res => res.json())
         .then(data => {
-            pushTweetsIntoAllWords(data)
+            pushTweetsIntoFilteredArray(data)
             wordCount = countOccurrences(wordsWithNoArticles)
-            wordCloudArray = turnAllWordsIntoArray(wordCount)
+            wordCloudArray = turnWordsIntoCloudArray(wordCount)
             makeWordCloud(wordCloudArray)
         })
     }
 
-    const fetchWordData = (word) => {
-        fetch(wordBaseUrl + `?word=${word}` )
-        .then(res => res.json())
-        .then(showDefinitionAndSynonyms)
-    }
-
-    const showDefinitionAndSynonyms = (wordObject) => {
-        const masterDiv = document.createElement('div')
-        masterDiv.id = "definition-container"
-        document.getElementById('def-layout').append(masterDiv)
-        let results = wordObject.results
-        const nameDiv = document.createElement('div')
-        nameDiv.id = "word-name"
-        const defDiv = document.createElement('div')
-        defDiv.id = "word-def"
-        const synDiv = document.createElement('div')
-        synDiv.id = "word-syn"
-        nameDiv.innerText = wordObject.word 
-        for (const result of results) {
-            defDiv.insertAdjacentHTML('beforeend',`
-            <p> Defintion: ${result.definition}</p>
-            <p> Part of Speech: ${result.partOfSpeech}</p>
-            `)
-            let syns = result.synonyms
-            console.log(syns)
-            const ul = document.createElement('ul')
-            if (syns) {
-                for (const word of syns) {
-                    const li = document.createElement('li')
-                    li.innerText = word
-                    ul.append(li)
-                }
-            }
-            synDiv.append(ul) 
-        }
-        masterDiv.append(nameDiv, defDiv, synDiv)
-    }
-
-    const clickHandler = () => {
-        document.addEventListener('click', e => {
-            if (e.target.matches('span')) {
-                let layout = document.getElementById('no-def-layout')
-                layout.id = 'def-layout'
-                document.getElementById("handle-search-bar").style.display = 'none'
-                let word = e.target.textContent
-                fetchWordData(word)
-            }
-        })
-    }
-
-    const pushTweetsIntoAllWords = (tweets) => {
+    const pushTweetsIntoFilteredArray = (tweets) => {
         for (const tweet of tweets) {
-            pushTweetIntoAllWords(tweet)
+            pushTweetIntoFilteredArray(tweet)
         }
     }
 
-    const pushTweetIntoAllWords = (tweet) => {
+    const pushTweetIntoFilteredArray = (tweet) => {
         const tweetText = tweet.text 
         const tweetTextWords = tweetText.replace(/[^A-Za-z- ']+/g, '')
         const tweetTextWordsLowerCase = tweetTextWords.toLowerCase()
@@ -96,6 +46,42 @@ document.addEventListener("DOMContentLoaded", e => {
                 wordsWithNoArticles.push(word)
             }
         }
+    }
+
+    const fetchWordData = (word) => {
+        fetch(wordBaseUrl + `?word=${word}` )
+        .then(res => res.json())
+        .then(showDefinitionAndSynonyms)
+    }
+
+    const showDefinitionAndSynonyms = (wordObject) => {
+        const masterDiv = createElementWithId('div', 'definition-container')
+        const nameDiv = createElementWithId('div', 'word-name')
+        const defDiv = createElementWithId('div', 'word-def')
+        const synDiv = createElementWithId('div', 'word-syn')
+        document.getElementById('def-layout').append(masterDiv)
+        let results = wordObject.results
+        nameDiv.innerText = wordObject.word 
+        for (const result of results) {
+            createDefinitionDivs(result, defDiv)
+            let syns = result.synonyms
+            const ul = document.createElement('ul')
+            if (syns) {createSynonymsLis(ul, syns)}
+            synDiv.append(ul) 
+        }
+        masterDiv.append(nameDiv, defDiv, synDiv)
+    }
+
+    const clickHandler = () => {
+        document.addEventListener('click', e => {
+            if (e.target.matches('span')) {
+                let layout = document.getElementById('no-def-layout')
+                layout.id = 'def-layout'
+                document.getElementById("handle-search-bar").style.display = 'none'
+                let word = e.target.textContent
+                fetchWordData(word)
+            }
+        })
     }
 
     const countOccurrences = arr => {
@@ -142,12 +128,35 @@ document.addEventListener("DOMContentLoaded", e => {
         WordCloud(wordContainer, { list: list } );
     }
 
-    const turnAllWordsIntoArray = (wordCount) => {
+    const turnWordsIntoCloudArray = (wordCount) => {
         wordCloudArray = []
         for (word in wordCount) {
             wordCloudArray.push([word, (parseInt(wordCount[word]) * 5)])
         }
         return wordCloudArray
+    }
+
+    //HELPER METHODS 
+
+    const createElementWithId = (element, id) => {
+        newElement = document.createElement(element)
+        newElement.id = id
+        return newElement
+    }
+
+    const createSynonymsLis = (ul, array) => {
+        for (const word of array) {
+            const li = document.createElement('li')
+            li.innerText = word
+            ul.append(li)
+        }
+    }
+
+    const createDefinitionDivs = (resultObject, defDiv) => {
+        defDiv.insertAdjacentHTML('beforeend',`
+        <p> Defintion: ${resultObject.definition}</p>
+        <p> Part of Speech: ${resultObject.partOfSpeech}</p>
+        `)
     }
 
     submitHandler()
