@@ -104,12 +104,12 @@ document.addEventListener("DOMContentLoaded", e => {
             if (e.target.matches('span')) {
                 let layout = document.getElementById('no-def-layout')
                 layout.id = 'def-layout'
-                wordContainer.style.zIndex = '1'
+                // wordContainer.style.zIndex = '1'
                 wordContainer.style.backgroundColor = 'lightgray'
-                document.getElementById("handle-search-bar").style.display = 'none'
+                // document.getElementById("handle-search-bar").style.display = 'none'
                 let word = e.target.textContent
                 fetchWordData(word)
-            } else if (e.target.matches('button')) {
+            } else if (e.target.matches('#exit-button')) {
                 console.log('hey')
                 let layout = document.getElementById('def-layout')
                 document.getElementById('definition-container').remove()
@@ -118,18 +118,22 @@ document.addEventListener("DOMContentLoaded", e => {
                 document.getElementById("handle-search-bar").style.display = 'flex'
                 wordContainer.style.zIndex = '0'
             }
+             else if (e.target.matches('#sign-in-button')) {
+                showSignInForm()
+            }
         })
     }
 
 
     const submitHandler = () => {
-        const handleForm = document.getElementById('handle-search-bar')
-        handleForm.addEventListener("submit", e => {
+        // const handleForm = document.getElementById('first-handle-search-bar')
+        document.addEventListener("submit", e => {
             e.preventDefault()
-            searchContainer.className = "other-search"
-            handle = handleForm.handle.value
-            number = parseInt(handleForm.amount.value)
+            searchContainer.remove()
+            handle = e.target.handle.value
+            number = parseInt(e.target.amount.value)
             displayMainPage(handle, number)        
+            document.getElementById("other-handle-search-bar").style.display = 'flex'
         })
     }
 
@@ -189,6 +193,45 @@ document.addEventListener("DOMContentLoaded", e => {
         `)
     }
 
+    const createUser = (user_handle) => {
+        fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({
+                user_handle: user_handle
+            })
+        })
+    }
+
+    const showSignInForm = () => {
+        const signInForm = createElementWithId('form', 'sign-in-form')
+        signInForm.innerHTML = `
+        <input name="user-handle" type="text" placeholder="Enter Your Own Handle">
+        <input name="password" placeholder="Password" type="text">
+        <input type="submit">`
+        if (document.getElementById('sign-in').children.length === 1) { 
+            document.getElementById('sign-in').append(signInForm)
+        }
+    }
+
+    const createNewSession = (user_handle) => {
+        fetch('http://localhost:3000/sessions', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({
+                user_handle: user_handle
+            })
+        })
+    }
+    
+    createNewSession('this_is_yet_another_handle')
+    // createUser('this_is_a_handle')
     submitHandler()
     clickHandler()
 })

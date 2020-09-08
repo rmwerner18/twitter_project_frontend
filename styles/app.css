@@ -53,6 +53,7 @@ span {
     overflow:scroll;
     overflow-x:hidden;
     height: 100vh;
+    /* max-width: 230px; */
 }
 
 #words-container {
@@ -69,21 +70,25 @@ span {
     background: #a0aca9;
     color: red;
     font-size: 10px;
-    position: fixed;
+    /* position: fixed; */
     width: 100vw;
     height: 60px;
-    z-index: 2;
+    /* margin-bottom: 60px; */
+ 
 }
 
 .other-search {
     margin-top: 0;
     height: 50px;
     width: 100vw;
-    position: fixed;
+    /* position: ; */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+}
+
+#other-handle-search-bar {
+    display: none;
 }
 
 .first-search {
@@ -91,6 +96,7 @@ span {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 #exit-button {
