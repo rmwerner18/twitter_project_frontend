@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", e => {
     let wordsWithNoArticles = []
     let wordContainer = document.getElementById('words-container')
     let searchContainer = document.getElementById('search-container')
+    let handle 
+    let number
 
     const fetchData = (handle, number) => {
         fetch(baseUrl + `/?handle=${handle}&number=${number}`)
@@ -48,6 +50,22 @@ document.addEventListener("DOMContentLoaded", e => {
         }
     }
 
+    const countOccurrences = arr => {
+        return arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {});
+    }
+
+    const makeWordCloud = (list) => {
+        WordCloud(wordContainer, { list: list } );
+    }
+
+    const turnWordsIntoCloudArray = (wordCount) => {
+        wordCloudArray = []
+        for (word in wordCount) {
+            wordCloudArray.push([word, (parseInt(wordCount[word]) * 5)])
+        }
+        return wordCloudArray
+    }
+
     const fetchWordData = (word) => {
         fetch(wordBaseUrl + `?word=${word}` )
         .then(res => res.json())
@@ -59,6 +77,9 @@ document.addEventListener("DOMContentLoaded", e => {
         const nameDiv = createElementWithId('div', 'word-name')
         const defDiv = createElementWithId('div', 'word-def')
         const synDiv = createElementWithId('div', 'word-syn')
+        let button = createElementWithId('button', 'exit-button')
+        masterDiv.append(button)
+        button.innerText = "X"
         document.getElementById('def-layout').append(masterDiv)
         let results = wordObject.results
         nameDiv.innerText = wordObject.word 
@@ -77,33 +98,41 @@ document.addEventListener("DOMContentLoaded", e => {
             if (e.target.matches('span')) {
                 let layout = document.getElementById('no-def-layout')
                 layout.id = 'def-layout'
+                wordContainer.style.zIndex = '1'
+                wordContainer.style.backgroundColor = 'lightgray'
                 document.getElementById("handle-search-bar").style.display = 'none'
                 let word = e.target.textContent
                 fetchWordData(word)
+            } else if (e.target.matches('button') || e.target.matches) {
+                console.log('hey')
+                let layout = document.getElementById('def-layout')
+                document.getElementById('definition-container').remove()
+                layout.id = 'no-def-layout'
+                wordContainer.style.backgroundColor = 'white'
             }
         })
     }
 
-    const countOccurrences = arr => {
-        return arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {});
-    }
 
     const submitHandler = () => {
         const handleForm = document.getElementById('handle-search-bar')
         handleForm.addEventListener("submit", e => {
             e.preventDefault()
             searchContainer.className = "other-search"
-            const handle = handleForm.handle.value
-            const number = parseInt(handleForm.amount.value)
-            allWords = []
-            wordContainer.innerHTML = ""
-            const tweetContainer = document.getElementById("tweets-container")
-            tweetContainer.innerHTML = ""
-            tweetContainer.append(createATag(number, handle))
-            tweetContainer.append(createTweetWidget())
-            
-            fetchData(handle, number)         
+            handle = handleForm.handle.value
+            number = parseInt(handleForm.amount.value)
+            displayMainPage(handle, number)        
         })
+    }
+
+    const displayMainPage = (handle, number) => {
+        allWords = []
+        wordContainer.innerHTML = ""
+        const tweetContainer = document.getElementById("tweets-container")
+        tweetContainer.innerHTML = ""
+        tweetContainer.append(createATag(number, handle))
+        tweetContainer.append(createTweetWidget())
+        fetchData(handle, number)  
     }
 
     const createTweetWidget = () => {
@@ -122,18 +151,6 @@ document.addEventListener("DOMContentLoaded", e => {
         a.dataset.tweetLimit = number
         a.href = `https://twitter.com/${handle}`
         return a  
-    }
-
-    const makeWordCloud = (list) => {
-        WordCloud(wordContainer, { list: list } );
-    }
-
-    const turnWordsIntoCloudArray = (wordCount) => {
-        wordCloudArray = []
-        for (word in wordCount) {
-            wordCloudArray.push([word, (parseInt(wordCount[word]) * 5)])
-        }
-        return wordCloudArray
     }
 
     //HELPER METHODS 

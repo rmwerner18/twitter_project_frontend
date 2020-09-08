@@ -5,10 +5,12 @@
 
 #def-layout {
     display: grid;
-    grid-template-columns: minmax(250px, 25%) auto minmax(250px, 50%);
+    grid-template-columns: minmax(250px, 25%) auto minmax(250px, 40%);
 }
 
 #definition-container {
+    overflow: scroll;
+    height: 100vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 50px 1fr;
@@ -45,9 +47,17 @@
 }
 
 #words-container {
+    overflow: scroll;
     height: 100vh;
-    overflow-y: hidden
 }
+
+/* .header {
+    padding: 5px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 10px;
+  } */
 
 .other-search {
     margin-top: 0;
@@ -65,4 +75,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+#exit-button {
+    margin-top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: top;
+    justify-content: flex-end;
 }
