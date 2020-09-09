@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 document.getElementById("handle-search-bar").style.display = 'flex'
                 wordContainer.style.zIndex = '0'
             }
-             else if (e.target.matches('#sign-in-button')) {
+            else if (e.target.matches('#sign-in-button')) {
                 showSignInForm()
             }
         })
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", e => {
         })
     }
     
-    createNewSession('this_is_yet_another_handle')
+    // createNewSession('this_is_yet_another_handle')
     // createUser('this_is_a_handle')
     submitHandler()
     clickHandler()
