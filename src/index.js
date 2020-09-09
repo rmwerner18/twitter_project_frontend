@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", e => {
     let wordsWithNoArticles = []
     let wordContainer = document.getElementById('words-container')
     let searchContainer = document.getElementById('search-container')
-    let definitionContainer = document.getElementById('definition-container')
     let header = document.getElementById('header')
     let handle 
     let number
@@ -81,6 +80,7 @@ document.addEventListener("DOMContentLoaded", e => {
         const defDiv = createElementWithId('div', 'word-def')
         const synDiv = createElementWithId('div', 'word-syn')
         let button = createElementWithId('button', 'exit-button')
+        let addButton = createElementWithId('button', 'add-button')
         masterDiv.append(button)
         button.innerText = ">"
         document.getElementById('def-layout').append(masterDiv)
@@ -95,6 +95,8 @@ document.addEventListener("DOMContentLoaded", e => {
             if (syns) {createSynonymsLis(ul, syns)}
             synDiv.append(singleSynDiv)
         }
+        addButton.innerText = "Add word to bank"
+        nameDiv.append(addButton)
         masterDiv.append(nameDiv, defDiv, synDiv)
     }
 
@@ -117,7 +119,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 document.getElementById("handle-search-bar").style.display = 'flex'
                 wordContainer.style.zIndex = '0'
             }
-             else if (e.target.matches('#sign-in-button')) {
+            else if (e.target.matches('#sign-in-button')) {
                 if (document.getElementById('sign-in-button').innerText == 'Sign Out') {
                     location.reload()
                 } else if (document.getElementById('sign-in-button').innerText == 'Sign In' && document.getElementById('sign-in-form')) {
@@ -125,6 +127,18 @@ document.addEventListener("DOMContentLoaded", e => {
                 }
                 else {
                     showSignInForm()
+                }
+            }
+            else if (e.target.matches('li')) {
+                let definitionContainer = document.getElementById('definition-container')
+                definitionContainer.remove()
+                fetchWordData(e.target.innerText)
+            }
+            else if (e.target.matches('#add-button')) {
+                if (document.querySelector('body').dataset.userHandle) {
+                    addToWordBank(e.target.previousSibling, document.querySelector('body').dataset.userHandle)
+                } else {
+                    console.log("hello")
                 }
             } 
         })
@@ -202,7 +216,7 @@ document.addEventListener("DOMContentLoaded", e => {
     const createDefinitionDivs = (resultObject, defDiv) => {
         defDiv.insertAdjacentHTML('beforeend',`
         <div class="single-def">
-            <p> Defintion: ${resultObject.definition}</p>
+            <p> Definition: ${resultObject.definition}</p>
             <p> Part of Speech: ${resultObject.partOfSpeech}</p>
         </div>
         `)
@@ -236,6 +250,12 @@ document.addEventListener("DOMContentLoaded", e => {
     const setCurrentUser = (userObject) => {
         document.querySelector('body').dataset.userId = userObject.id
         document.querySelector('body').dataset.userHandle = userObject.handle
+    }
+
+    const addToWordBank = (word, id) => {
+        fetch('http://localhost:3000/users/' + `${id}`)
+        .then( res => res.json())
+        .then(console.log())
     }
 
     // const createNewSession = (user_handle) => {
