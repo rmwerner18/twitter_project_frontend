@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", e => {
     let wordsWithNoArticles = []
     let wordContainer = document.getElementById('words-container')
     let searchContainer = document.getElementById('search-container')
+    let definitionContainer = document.getElementById('definition-container')
     let header = document.getElementById('header')
     let handle 
     let number
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", e => {
             wordCloudArray = turnWordsIntoCloudArray(wordCount)
             console.log(wordCloudArray)
             makeWordCloud(wordCloudArray)
+            checkLoggedIn(document.querySelector('body'))
         })
     }
 
@@ -75,17 +77,23 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const showDefinitionAndSynonyms = (wordObject) => {
-        const masterDiv = createElementWithId('div', 'definition-container')
+        const masterDiv = document.getElementById('definition-container')
+        console.log(masterDiv)
+        masterDiv.style.display = 'grid'
         const nameDiv = createElementWithId('div', 'word-name')
         const defDiv = createElementWithId('div', 'word-def')
         const synDiv = createElementWithId('div', 'word-syn')
         let button = createElementWithId('button', 'exit-button')
         let addButton = createElementWithId('button', 'add-button')
+        let addDiv = createElementWithId('div', 'add-container')
+
         masterDiv.append(button)
         button.innerText = ">"
         document.getElementById('def-layout').append(masterDiv)
         let results = wordObject.results
-        nameDiv.innerText = wordObject.word 
+        nameDiv.innerHTML = `
+            <h3 id="word-header">${wordObject.word}</h3>
+        `
         for (const result of results) {
             const singleSynDiv = createElementWithId('div', 'single-syn')
             createDefinitionDivs(result, defDiv)
@@ -96,7 +104,8 @@ document.addEventListener("DOMContentLoaded", e => {
             synDiv.append(singleSynDiv)
         }
         addButton.innerText = "Add word to bank"
-        nameDiv.append(addButton)
+        addDiv.append(addButton)
+        nameDiv.append(addDiv)
         masterDiv.append(nameDiv, defDiv, synDiv)
     }
 
@@ -113,10 +122,13 @@ document.addEventListener("DOMContentLoaded", e => {
             } else if (e.target.matches('#exit-button')) {
                 console.log('hey')
                 let layout = document.getElementById('def-layout')
-                document.getElementById('definition-container').remove()
+                document.getElementById('definition-container').innerHTML = ""
+                document.getElementById('definition-container').style.display = "none"
                 layout.id = 'no-def-layout'
                 wordContainer.style.backgroundColor = 'white'
-                document.getElementById("handle-search-bar").style.display = 'flex'
+                // if (document.getElementById("handle-search-bar").style.display === 'none') {
+                //     document.getElementById("handle-search-bar").style.display = 'flex'
+                // }
                 wordContainer.style.zIndex = '0'
             }
             else if (e.target.matches('#sign-in-button')) {
@@ -130,16 +142,24 @@ document.addEventListener("DOMContentLoaded", e => {
                 }
             }
             else if (e.target.matches('li')) {
-                let definitionContainer = document.getElementById('definition-container')
-                definitionContainer.remove()
+                definitionContainer.innerHTML = ""
                 fetchWordData(e.target.innerText)
             }
             else if (e.target.matches('#add-button')) {
                 if (document.querySelector('body').dataset.userHandle) {
-                    addToWordBank(e.target.previousSibling, document.querySelector('body').dataset.userHandle)
+                    selectUser(document.getElementById('word-header').innerText, document.querySelector('body').dataset.userId)
+                    console.log(document.getElementById('word-header').innerText)
                 } else {
                     console.log("hello")
                 }
+            }
+            else if (e.target.matches('#word-bank-button')) {
+                const layout = document.getElementById('no-def-layout')
+                layout.id = 'def-layout'
+                definitionContainer.style.display = 'grid'
+                definitionContainer.innerHTML = `
+                <button id="exit-button"> > </button>
+                `
             } 
         })
     }
@@ -252,10 +272,58 @@ document.addEventListener("DOMContentLoaded", e => {
         document.querySelector('body').dataset.userHandle = userObject.handle
     }
 
-    const addToWordBank = (word, id) => {
+    const selectUser = (word, id) => {
         fetch('http://localhost:3000/users/' + `${id}`)
         .then( res => res.json())
-        .then(console.log())
+        .then( userObj => {
+            const words = userObj.words 
+            words.push(word)
+            const id = userObj.id
+            console.log(id)
+            addToWordBank(words, id)
+        })
+    }
+
+    const addToWordBank = (wordArray, id) => {
+        options = {
+            method: 'PATCH',
+            headers: {
+                'content-type':'application/json',
+                'accept':'application/json'
+            },
+            body: JSON.stringify({
+                words: wordArray
+            })
+        }
+        fetch('http://localhost:3000/users/' + id + `/?words=:${wordArray}`, options)
+        .then(res => res.json())
+        .then(console.log)
+    }
+
+    const checkLoggedIn = (body) => {
+        if (body.dataset.userId) {
+            document.getElementById('word-bank-button').style.display = "block"
+            const bodyId = parseInt(body.dataset.userId)
+            fetch('http://localhost:3000/users/' + bodyId)
+            .then(res => res.json())
+            .then(userObj => {
+                const words = userObj.words 
+                iterateWords(words)
+            })
+        }
+        else {
+            console.log('not logged in')
+        }
+    }
+
+    const iterateWords = (wordArray) => {
+        for (const word of wordArray) {
+            displayWordInBank(word)
+        }
+    }
+
+    const displayWordInBank = (word) => {
+        console.log(word)
     }
 
     // const createNewSession = (user_handle) => {

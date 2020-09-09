@@ -14,7 +14,7 @@ body {
 #definition-container {
     overflow: scroll;
     height: 100vh;
-    display: grid;
+    display: none;
     grid-template-columns: 20px repeat(2, 1fr);
     grid-template-rows: 50px 1fr;
     grid-column-gap: 5px;
@@ -88,6 +88,10 @@ span {
 }
 
 #other-handle-search-bar {
+    display: none;
+}
+
+#word-bank-button {
     display: none;
 }
 
