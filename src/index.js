@@ -154,12 +154,16 @@ document.addEventListener("DOMContentLoaded", e => {
                 }
             }
             else if (e.target.matches('#word-bank-button')) {
+                const bodyId = parseInt(document.querySelector('body').dataset.userId)
                 const layout = document.getElementById('no-def-layout')
                 layout.id = 'def-layout'
                 definitionContainer.style.display = 'grid'
                 definitionContainer.innerHTML = `
-                <button id="exit-button"> > </button>
-                `
+                <button id="exit-button"> > </button>`
+                const loggedIn = checkLoggedIn(document.querySelector('body'))
+                if (loggedIn) {
+                    fetchUserData(bodyId)
+                }
             } 
         })
     }
@@ -303,17 +307,21 @@ document.addEventListener("DOMContentLoaded", e => {
     const checkLoggedIn = (body) => {
         if (body.dataset.userId) {
             document.getElementById('word-bank-button').style.display = "block"
-            const bodyId = parseInt(body.dataset.userId)
-            fetch('http://localhost:3000/users/' + bodyId)
-            .then(res => res.json())
-            .then(userObj => {
-                const words = userObj.words 
-                iterateWords(words)
-            })
+            return true
         }
         else {
             console.log('not logged in')
+            return false
         }
+    }
+
+    const fetchUserData = (id) => {
+        fetch('http://localhost:3000/users/' + id)
+        .then( res => res.json())
+        .then(userObj => {
+            const words = userObj.words
+            iterateWords(words)
+        })
     }
 
     const iterateWords = (wordArray) => {
@@ -323,7 +331,9 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const displayWordInBank = (word) => {
-        console.log(word)
+        const span = createElementWithId('span', `${word}-banked`)
+        span.innerText = word
+        definitionContainer.append(span)
     }
 
     // const createNewSession = (user_handle) => {
