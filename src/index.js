@@ -18,11 +18,10 @@ document.addEventListener("DOMContentLoaded", e => {
         .then(res => res.json())
         .then(data => {
             pushTweetsIntoFilteredArray(data)
+            checkLoggedIn(document.querySelector('body'))
             wordCount = countOccurrences(wordsWithNoArticles)
             wordCloudArray = turnWordsIntoCloudArray(wordCount)
-            console.log(wordCloudArray)
             makeWordCloud(wordCloudArray)
-            checkLoggedIn(document.querySelector('body'))
         })
     }
 
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", e => {
         let articles = ['if', 'of', 'the', 'for', 'and', 'a', 'to', 'be', 'rt', 'by', 'in', '', 'is']
         for (const word of wordArray) {
             if (articles.includes(word)) {
-                console.log(word)
             } else {
                 wordsWithNoArticles.push(word)
             }
@@ -113,7 +111,10 @@ document.addEventListener("DOMContentLoaded", e => {
         document.addEventListener('click', e => {
             if (e.target.matches('span')) {
                 let layout = document.getElementById('no-def-layout')
-                layout.id = 'def-layout'
+                if (layout) {
+                    layout.id = 'def-layout'
+                }
+                definitionContainer.innerHTML = ""
                 // wordContainer.style.zIndex = '1'
                 wordContainer.style.backgroundColor = 'lightgray'
                 // document.getElementById("handle-search-bar").style.display = 'none'
@@ -121,9 +122,15 @@ document.addEventListener("DOMContentLoaded", e => {
                 fetchWordData(word)
             } else if (e.target.matches('#exit-button')) {
                 console.log('hey')
+                const wordBankButton = document.getElementById('word-bank-button')
                 let layout = document.getElementById('def-layout')
-                document.getElementById('definition-container').innerHTML = ""
-                document.getElementById('definition-container').style.display = "none"
+                if (wordBankButton) {
+                    if (wordBankButton.className === "out") {
+                        wordBankButton.classList.remove("out")
+                    }
+                }
+                definitionContainer.innerHTML = ""
+                definitionContainer.style.display = "none"
                 layout.id = 'no-def-layout'
                 wordContainer.style.backgroundColor = 'white'
                 // if (document.getElementById("handle-search-bar").style.display === 'none') {
@@ -155,15 +162,29 @@ document.addEventListener("DOMContentLoaded", e => {
             }
             else if (e.target.matches('#word-bank-button')) {
                 const bodyId = parseInt(document.querySelector('body').dataset.userId)
-                const layout = document.getElementById('no-def-layout')
-                layout.id = 'def-layout'
-                definitionContainer.style.display = 'grid'
-                definitionContainer.innerHTML = `
-                <button id="exit-button"> > </button>`
-                const loggedIn = checkLoggedIn(document.querySelector('body'))
-                if (loggedIn) {
-                    fetchUserData(bodyId)
+                const noDefLayout = document.getElementById('no-def-layout')
+                if (noDefLayout) {
+                    noDefLayout.id = 'def-layout'
+                    wordContainer.style.backgroundColor = 'lightgray'
                 }
+                const defLayout = document.getElementById('def-layout')
+                definitionContainer.style.display = 'flex'
+                definitionContainer.innerHTML = `
+                <button id="exit-button"> > </button>
+                <div id="words-div"></div>`
+                definitionContainer.classList.add("wordbank-container")
+                // const loggedIn = checkLoggedIn(document.querySelector('body'))
+                // if (loggedIn) {
+                    fetchUserData(bodyId)
+                // }
+                if (e.target.className === "out") {
+                    e.target.classList.remove("out")
+                    defLayout.id = "no-def-layout"
+                    wordContainer.style.backgroundColor = 'white'
+                    definitionContainer.innerHTML = ""
+                } else {
+                    e.target.classList.add("out")
+                }   
             } 
         })
     }
@@ -186,6 +207,8 @@ document.addEventListener("DOMContentLoaded", e => {
                 displayMainPage(user_handle, number = 20)
                 document.getElementById('sign-in-form').remove()
                 document.getElementById('sign-in-button').innerText = 'Sign Out'
+            } else if (e.target.matches("#words-div span")) {
+                console.log("hello!")
             }
         })
     }
@@ -331,26 +354,12 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const displayWordInBank = (word) => {
-        const span = createElementWithId('span', `${word}-banked`)
+        const span = document.createElement('span')
         span.innerText = word
-        definitionContainer.append(span)
+        span.style.zIndex = "2"
+        document.getElementById("words-div").append(span)
     }
 
-    // const createNewSession = (user_handle) => {
-    //     fetch('http://localhost:3000/users', {
-    //         method: 'POST',
-    //         headers: {
-    //             'content-type': 'application/json',
-    //             'accept': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             user_handle: user_handle
-    //         })
-    //     })
-    // }
-    
-    // createNewSession('this_is_yet_another_handle')
-    // createOrFindUser('this_is_a_handle')
     submitHandler()
     clickHandler()
 })

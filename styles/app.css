@@ -1,6 +1,6 @@
 #no-def-layout {
     display: grid;
-    grid-template-columns: minmax(250px, 25%) auto;
+    grid-template-columns: 250px auto;
 }
 body {
     margin: 0 0 0 0;
@@ -8,13 +8,15 @@ body {
 
 #def-layout {
     display: grid;
-    grid-template-columns: minmax(250px, 25%) auto minmax(250px, 40%);
+    grid-template-columns: 250px auto  minmax(250px, 40%);
 }
 
 #definition-container {
+
     overflow: scroll;
     height: 100vh;
     display: none;
+
     grid-template-columns: 20px repeat(2, 1fr);
     grid-template-rows: 50px 1fr;
     grid-column-gap: 5px;
@@ -22,6 +24,31 @@ body {
     grid-template-areas: 
     "but name name"
     "but def syn";
+}
+
+.wordbank-container {
+    
+    overflow: scroll;
+    height: 100vh;
+    display: none;
+
+    grid-template-columns: 20px repeat(2, 1fr);
+    grid-template-rows: 50px 1fr;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    grid-template-areas: 
+    "but div"
+    "but div";
+}
+
+
+#words-div {
+    grid-area: div;
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 span {
