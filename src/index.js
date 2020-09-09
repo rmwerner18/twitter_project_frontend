@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", e => {
     let searchContainer = document.getElementById('search-container')
     let definitionContainer = document.getElementById('definition-container')
     let header = document.getElementById('header')
-
     let handle 
     let number
 
@@ -119,8 +118,15 @@ document.addEventListener("DOMContentLoaded", e => {
                 wordContainer.style.zIndex = '0'
             }
              else if (e.target.matches('#sign-in-button')) {
-                showSignInForm()
-            }
+                if (document.getElementById('sign-in-button').innerText == 'Sign Out') {
+                    location.reload()
+                } else if (document.getElementById('sign-in-button').innerText == 'Sign In' && document.getElementById('sign-in-form')) {
+                    document.getElementById('sign-in-form').remove()
+                }
+                else {
+                    showSignInForm()
+                }
+            } 
         })
     }
 
@@ -130,10 +136,19 @@ document.addEventListener("DOMContentLoaded", e => {
         document.addEventListener("submit", e => {
             e.preventDefault()
             searchContainer.remove()
-            handle = e.target.handle.value
-            number = parseInt(e.target.amount.value)
-            displayMainPage(handle, number)        
             document.getElementById("other-handle-search-bar").style.display = 'flex'
+            if (e.target.matches('.search-form')) {
+                e.preventDefault()
+                handle = e.target.handle.value
+                number = parseInt(e.target.amount.value)
+                displayMainPage(handle, number)        
+            } else if (e.target.matches('#sign-in-form')) {
+                const user_handle = (e.target.user.value)
+                createOrFindUser(user_handle)
+                displayMainPage(user_handle, number = 20)
+                document.getElementById('sign-in-form').remove()
+                document.getElementById('sign-in-button').innerText = 'Sign Out'
+            }
         })
     }
 
@@ -193,23 +208,24 @@ document.addEventListener("DOMContentLoaded", e => {
         `)
     }
 
-    const createUser = (user_handle) => {
+    const createOrFindUser = (user_handle) => {
         fetch('http://localhost:3000/users', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json',
-                'accept': 'application/json'
+                "content-type": "application/json",
+                "accept": "application/json"
             },
             body: JSON.stringify({
-                user_handle: user_handle
+                handle: user_handle
             })
-        })
+        }).then(resp => resp.json())
+        .then(setCurrentUser) 
     }
 
     const showSignInForm = () => {
         const signInForm = createElementWithId('form', 'sign-in-form')
         signInForm.innerHTML = `
-        <input name="user-handle" type="text" placeholder="Enter Your Own Handle">
+        <input name="user" type="text" placeholder="Enter Your Own Handle">
         <input name="password" placeholder="Password" type="text">
         <input type="submit">`
         if (document.getElementById('sign-in').children.length === 1) { 
@@ -217,21 +233,26 @@ document.addEventListener("DOMContentLoaded", e => {
         }
     }
 
-    const createNewSession = (user_handle) => {
-        fetch('http://localhost:3000/sessions', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'accept': 'application/json'
-            },
-            body: JSON.stringify({
-                user_handle: user_handle
-            })
-        })
+    const setCurrentUser = (userObject) => {
+        document.querySelector('body').dataset.userId = userObject.id
+        document.querySelector('body').dataset.userHandle = userObject.handle
     }
+
+    // const createNewSession = (user_handle) => {
+    //     fetch('http://localhost:3000/users', {
+    //         method: 'POST',
+    //         headers: {
+    //             'content-type': 'application/json',
+    //             'accept': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             user_handle: user_handle
+    //         })
+    //     })
+    // }
     
-    createNewSession('this_is_yet_another_handle')
-    // createUser('this_is_a_handle')
+    // createNewSession('this_is_yet_another_handle')
+    // createOrFindUser('this_is_a_handle')
     submitHandler()
     clickHandler()
 })
