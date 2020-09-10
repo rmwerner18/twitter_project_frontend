@@ -90,24 +90,35 @@ span {
 }
 
 #header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 20% 60% 10% 10%;
     padding: 5px;
-    background: #a0aca9;
+    background: var(--main-bg-color);
     color: red;
     font-size: 10px;
     /* position: fixed; */
     width: 100vw;
     height: 60px;
     /* margin-bottom: 60px; */
- 
+    border-bottom: solid 1px lightgrey;
+}
+
+:root {
+    --main-bg-color: #a0aca9;
+}
+
+html {
+    background-color: var(--main-bg-color);
 }
 
 .other-search {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     margin-top: 0;
     height: 50px;
-    width: 100vw;
+    width: 200px;
     /* position: ; */
     display: flex;
     justify-content: center;
@@ -128,6 +139,50 @@ span {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+    width: 761px;
+    display: grid;
+}
+
+button {
+    border-radius: 25px;
+    border: solid lightgrey 1px;
+}
+
+#first-handle-search-bar {
+    display: grid;
+    grid-template-columns: 561px 50px 100px;
+    grid-template-areas: 
+    'fsf twtamt fss'
+    ;
+    height: 44px;
+    grid-column-gap: 5px;
+}
+
+#first-search-field {
+    grid-area: fsf;
+    border: solid lightgrey 1px;
+    border-radius: 25px;
+    text-align: center;
+    font-size: 24px;
+}
+
+#tweet-amount {
+    grid-area: twtamt;
+    border-radius: 25px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: solid lightgrey 1px;
+    font-size: 16px;
+}
+
+
+#first-search-submit {
+    grid-area: fss;
+    border-radius: 25px;
+    border: solid lightgrey 1px;
+    font-size: 20px;
 }
 
 #exit-button {

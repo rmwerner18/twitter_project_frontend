@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", e => {
             }
             else if (e.target.matches('#add-button')) {
                 if (document.querySelector('body').dataset.userHandle) {
-                    selectUser(document.getElementById('word-header').innerText, document.querySelector('body').dataset.userId)
+                    selectUser(document.getElementById('word-header').innerText, document.querySelector('body').dataset.userId, 'add')
                     console.log(document.getElementById('word-header').innerText)
                 } else {
                     console.log("hello")
@@ -173,10 +173,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 <button id="exit-button"> > </button>
                 <div id="words-div"></div>`
                 definitionContainer.classList.add("wordbank-container")
-                // const loggedIn = checkLoggedIn(document.querySelector('body'))
-                // if (loggedIn) {
-                    fetchUserData(bodyId)
-                // }
                 if (e.target.className === "out") {
                     e.target.classList.remove("out")
                     defLayout.id = "no-def-layout"
@@ -184,14 +180,20 @@ document.addEventListener("DOMContentLoaded", e => {
                     definitionContainer.innerHTML = ""
                 } else {
                     e.target.classList.add("out")
+                    fetchUserData(bodyId)
                 }   
             } 
+            else if (e.target.matches('.delete-button')) {
+                userId = parseInt(document.querySelector('body').dataset.userId)
+                selectUser(e.target.previousSibling.innerText, userId, 'delete')
+                e.target.previousSibling.remove()
+                e.target.remove()
+            }
         })
     }
 
 
     const submitHandler = () => {
-        // const handleForm = document.getElementById('first-handle-search-bar')
         document.addEventListener("submit", e => {
             e.preventDefault()
             searchContainer.remove()
@@ -299,15 +301,20 @@ document.addEventListener("DOMContentLoaded", e => {
         document.querySelector('body').dataset.userHandle = userObject.handle
     }
 
-    const selectUser = (word, id) => {
+    const selectUser = (word, id, deleteOrAdd) => {
         fetch('http://localhost:3000/users/' + `${id}`)
         .then( res => res.json())
         .then( userObj => {
-            const words = userObj.words 
-            words.push(word)
-            const id = userObj.id
-            console.log(id)
-            addToWordBank(words, id)
+            let words = userObj.words
+            const id = userObj.id 
+            if (deleteOrAdd === 'delete') {
+                document.getElementById('words-div').innerHTML = ""
+                words = words.filter(element => element !== word)
+                addToWordBank(words, id)
+            } else {
+                words.push(word)
+                addToWordBank(words, id)
+            }
         })
     }
 
@@ -343,6 +350,8 @@ document.addEventListener("DOMContentLoaded", e => {
         .then( res => res.json())
         .then(userObj => {
             const words = userObj.words
+            console.log(words)
+            document.getElementById('words-div').innerHTML = ""
             iterateWords(words)
         })
     }
@@ -357,8 +366,24 @@ document.addEventListener("DOMContentLoaded", e => {
         const span = document.createElement('span')
         span.innerText = word
         span.style.zIndex = "2"
+        const deleteButton = document.createElement('button')
+        deleteButton.classList.add('delete-button')                   
         document.getElementById("words-div").append(span)
+        document.getElementById("words-div").append(deleteButton)
     }
+
+
+    // const deleteFromWordBank = (word, id) => {
+    //     const options = {
+    //         method: 'PATCH',
+    //         headers: {
+    //             'content-type': 'application/json',
+    //             'accept': 'application/json'
+    //         },   
+    //     }
+
+    //     fetch('http://localhost:3000/users/' + id + `/?words=:${word}`, options)
+    // }
 
     submitHandler()
     clickHandler()
