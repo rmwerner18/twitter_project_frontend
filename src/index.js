@@ -58,8 +58,16 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const makeWordCloud = (list) => {
-        WordCloud(wordContainer, { list: list } );
+        WordCloud(wordContainer, { list: list, gridSize: 10,
+            weightFactor: 1,
+            minSize: "10",
+            shape: "star",
+            fontFamily: '"Courier New", Courier, monospace',
+            color: '#f0f0c0',
+            backgroundColor: "lightgrey" } );
     }
+
+
 
     const turnWordsIntoCloudArray = (wordCount) => {
         wordCloudArray = []
