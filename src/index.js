@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", e => {
     let wordContainer = document.getElementById('words-container')
     let searchContainer = document.getElementById('search-container')
     let definitionContainer = document.getElementById('definition-container')
+    const tweetContainer = document.getElementById("tweets-container")
     let header = document.getElementById('header')
     let handle 
     let number
@@ -114,8 +115,11 @@ document.addEventListener("DOMContentLoaded", e => {
                 if (layout) {
                     layout.id = 'def-layout'
                 }
+                if (document.querySelector("#word-bank-button").className === "out") {
+                    document.querySelector("#word-bank-button").classList.remove("out")
+                }
                 definitionContainer.innerHTML = ""
-                // wordContainer.style.zIndex = '1'
+                wordContainer.style.zIndex = '1'
                 wordContainer.style.backgroundColor = 'lightgray'
                 // document.getElementById("handle-search-bar").style.display = 'none'
                 let word = e.target.textContent
@@ -188,13 +192,27 @@ document.addEventListener("DOMContentLoaded", e => {
                 selectUser(e.target.previousSibling.innerText, userId, 'delete')
                 e.target.previousSibling.remove()
                 e.target.remove()
-            }
+            } 
+            // else if (e.target.matches('.word-bank-span')) {
+            //     let layout = document.getElementById('no-def-layout')
+            //     if (layout) {
+            //         layout.id = 'def-layout'
+            //     }
+            //     definitionContainer.innerHTML = ""
+            //     wordContainer.style.zIndex = '1'
+            //     wordContainer.style.backgroundColor = 'lightgray'
+            //     // document.getElementById("handle-search-bar").style.display = 'none'
+            //     let word = e.target.textContent
+            //     fetchWordData(word)
+            // }
         })
     }
 
 
     const submitHandler = () => {
         document.addEventListener("submit", e => {
+            wordContainer.style.display = "block"
+            tweetContainer.style.display = "block"
             e.preventDefault()
             searchContainer.remove()
             document.getElementById("other-handle-search-bar").style.display = 'flex'
@@ -221,7 +239,6 @@ document.addEventListener("DOMContentLoaded", e => {
         wordsWithNoArticles = []
         wordCloudArray = [] 
         wordContainer.innerHTML = ""
-        const tweetContainer = document.getElementById("tweets-container")
         tweetContainer.innerHTML = ""
         tweetContainer.append(createATag(number, handle))
         tweetContainer.append(createTweetWidget())
@@ -289,7 +306,6 @@ document.addEventListener("DOMContentLoaded", e => {
         const signInForm = createElementWithId('form', 'sign-in-form')
         signInForm.innerHTML = `
         <input name="user" type="text" placeholder="Enter Your Own Handle">
-        <input name="password" placeholder="Password" type="text">
         <input type="submit">`
         if (document.getElementById('sign-in').children.length === 1) { 
             document.getElementById('sign-in').append(signInForm)
@@ -365,6 +381,7 @@ document.addEventListener("DOMContentLoaded", e => {
     const displayWordInBank = (word) => {
         const span = document.createElement('span')
         span.innerText = word
+        span.className = "word-bank-span"
         span.style.zIndex = "2"
         const deleteButton = document.createElement('button')
         deleteButton.classList.add('delete-button')                   

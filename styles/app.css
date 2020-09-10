@@ -80,6 +80,8 @@ span {
     overflow:scroll;
     overflow-x:hidden;
     height: 100vh;
+    display: none;
+    box-shadow: 1px 1px 1px 1px black;
     /* max-width: 230px; */
 }
 
@@ -87,6 +89,8 @@ span {
     overflow: scroll;
     height: 100vh;
     opacity: .9;
+    display: none;
+    box-shadow: 1px 1px 1px 1px black;
 }
 
 #header {
@@ -94,39 +98,76 @@ span {
     grid-template-columns: 20% 60% 10% 10%;
     padding: 5px;
     background: var(--main-bg-color);
-    color: red;
     font-size: 10px;
     /* position: fixed; */
     width: 100vw;
     height: 60px;
     /* margin-bottom: 60px; */
     border-bottom: solid 1px lightgrey;
+    grid-template-areas: 
+        "title ot-srch wbb si";
+    align-items: center;
+    box-shadow: 0px 0px 1px 0px black;
+}
+
+#title {
+    grid-area: title;
+    /* padding-left: 10px; */
+    justify-self: center;
+}
+
+#sign-in {
+    grid-area: si;
+    justify-self: center;
+    align-items: center;
+}
+
+#word-button-container {
+    grid-area: wbb;
+    justify-self: center;
 }
 
 :root {
-    --main-bg-color: #a0aca9;
+    --main-bg-color: #A0ACA9;
 }
+
+#ot-submit-button {
+    grid-area: subm;
+}
+
 
 html {
     background-color: var(--main-bg-color);
 }
 
+#ot-search-field {
+    grid-area: bar;
+    width: 300px;
+}
+
 .other-search {
+    grid-area: ot-srch;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     margin-top: 0;
-    height: 50px;
+    height: 60px;
     width: 200px;
     /* position: ; */
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
+    /* grid-template-areas: 
+        "bar twtamt subm";
+    grid-column-gap: 10px; */
 }
 
 #other-handle-search-bar {
     display: none;
+    grid-template-areas: 
+    "bar twtamt subm";
+    grid-column-gap: 10px;
 }
 
 #word-bank-button {
@@ -146,6 +187,17 @@ html {
 button {
     border-radius: 25px;
     border: solid lightgrey 1px;
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+input {
+    border-radius: 25px;
+    border: solid lightgrey 1px;
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+select {
+    box-shadow: 1px 1px 1px 1px grey;
 }
 
 #first-handle-search-bar {
@@ -155,7 +207,7 @@ button {
     'fsf twtamt fss'
     ;
     height: 44px;
-    grid-column-gap: 5px;
+    grid-column-gap: 10px;
 }
 
 #first-search-field {
@@ -164,6 +216,7 @@ button {
     border-radius: 25px;
     text-align: center;
     font-size: 24px;
+    box-shadow: 1px 1px 1px 1px grey;
 }
 
 #tweet-amount {
@@ -182,7 +235,7 @@ button {
     grid-area: fss;
     border-radius: 25px;
     border: solid lightgrey 1px;
-    font-size: 20px;
+    font-size: 19px;
 }
 
 #exit-button {
