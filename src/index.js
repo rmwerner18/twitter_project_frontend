@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 definitionContainer.innerHTML = ""
                 definitionContainer.style.display = "none"
                 layout.id = 'no-def-layout'
-                wordContainer.style.backgroundColor = 'white'
+                // wordContainer.style.backgroundColor = ''
                 // if (document.getElementById("handle-search-bar").style.display === 'none') {
                 //     document.getElementById("handle-search-bar").style.display = 'flex'
                 // }
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 if (e.target.className === "out") {
                     e.target.classList.remove("out")
                     defLayout.id = "no-def-layout"
-                    wordContainer.style.backgroundColor = 'white'
+                    // wordContainer.style.backgroundColor = 'white'
                     definitionContainer.innerHTML = ""
                 } else {
                     e.target.classList.add("out")
@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 userId = parseInt(document.querySelector('body').dataset.userId)
                 selectUser(e.target.previousSibling.innerText, userId, 'delete')
                 e.target.previousSibling.remove()
+                console.log(e.target)
                 e.target.remove()
             } 
             // else if (e.target.matches('.word-bank-span')) {
@@ -332,7 +333,7 @@ document.addEventListener("DOMContentLoaded", e => {
             let words = userObj.words
             const id = userObj.id 
             if (deleteOrAdd === 'delete') {
-                document.getElementById('words-div').innerHTML = ""
+                // document.getElementById('words-div').innerHTML = ""
                 words = words.filter(element => element !== word)
                 addToWordBank(words, id)
             } else {
@@ -392,7 +393,8 @@ document.addEventListener("DOMContentLoaded", e => {
         span.className = "word-bank-span"
         span.style.zIndex = "2"
         const deleteButton = document.createElement('button')
-        deleteButton.classList.add('delete-button')                   
+        deleteButton.classList.add('delete-button')
+        deleteButton.innerText = "Delete"                   
         document.getElementById("words-div").append(span)
         document.getElementById("words-div").append(deleteButton)
     }

@@ -2,22 +2,36 @@
     display: grid;
     grid-template-columns: 250px auto;
 }
+
 body {
     margin: 0 0 0 0;
 }
 
 #def-layout {
     display: grid;
-    grid-template-columns: 250px auto  minmax(250px, 40%);
+    grid-template-columns: 250px auto minmax(250px, 40%);
+}
+
+#word-name {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 5px;
+    border: 1px solid lightgrey; 
+}
+
+#word-def {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 5px;
+    text-align: center;
+    border: 1px solid lightgrey; 
 }
 
 #definition-container {
-
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100vh;
     display: none;
-
-    grid-template-columns: 20px repeat(2, 1fr);
+    grid-template-columns: 20px repeat(2, );
     grid-template-rows: 50px 1fr;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -27,11 +41,9 @@ body {
 }
 
 .wordbank-container {
-    
     overflow: scroll;
     height: 100vh;
     display: none;
-
     grid-template-columns: 20px repeat(2, 1fr);
     grid-template-rows: 50px 1fr;
     grid-column-gap: 5px;
@@ -58,7 +70,7 @@ span {
 
 #word-name {
     grid-area: name;
-    max-height: 200px;
+    max-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,6 +78,7 @@ span {
 
 #word-def {
     grid-area: def;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: top;
@@ -73,12 +86,17 @@ span {
 }
 
 #word-syn {
+    max-width: 100%;
     grid-area: syn;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 5px;
+    border: 1px solid lightgrey;
 }
 
 #tweets-container {
-    overflow:scroll;
-    overflow-x:hidden;
+    overflow: scroll;
+    overflow-x: hidden;
     height: 100vh;
     display: none;
     box-shadow: 1px 1px 1px 1px black;
@@ -96,7 +114,7 @@ span {
 #header {
     display: grid;
     grid-template-columns: 20% 60% 10% 10%;
-    padding: 5px;
+    
     background: var(--main-bg-color);
     font-size: 10px;
     /* position: fixed; */
@@ -245,14 +263,18 @@ select {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 0px;
+    max-width: 20px;
 }
 
 .single-def {
     height: 200px;
-    width: 100%; 
+    border: 1px solid lightgrey;
+    overflow: scroll; 
 }
 
 #single-syn {
     height: 200px;
-    width: 100%;
+    border: 1px solid lightgrey;
+    overflow: scroll; 
 }
