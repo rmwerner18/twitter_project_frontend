@@ -59,7 +59,6 @@ body {
     width: 100%;
     display: flex;
     flex-flow: column wrap;
-    /* justify-content: center; */
     align-items: center;
 }
 
@@ -86,7 +85,6 @@ span:hover {
     display: flex;
     flex-direction: column;
     align-items: top;
-    /* justify-content: center; */
 }
 
 #word-syn {
@@ -104,7 +102,7 @@ span:hover {
     height: 100vh;
     display: none;
     box-shadow: 1px 1px 1px 1px black;
-    /* max-width: 230px; */
+    
 }
 
 #words-container {
@@ -117,24 +115,22 @@ span:hover {
 
 #header {
     display: grid;
-    grid-template-columns: 20% 60% 10% 10%;
-    
+    grid-template-columns: 20% 60% 10% 10%; 
+    z-index: 3;
     background: var(--main-bg-color);
     font-size: 10px;
-    /* position: fixed; */
     width: 100vw;
     height: 60px;
-    /* margin-bottom: 60px; */
     border-bottom: solid 1px lightgrey;
     grid-template-areas: 
         "title ot-srch wbb si";
     align-items: center;
     box-shadow: 0px 0px 1px 0px black;
+
 }
 
 #title {
     grid-area: title;
-    /* padding-left: 10px; */
     justify-self: center;
 }
 
@@ -176,13 +172,9 @@ html {
     margin-top: 0;
     height: 60px;
     width: 200px;
-    /* position: ; */
     display: grid;
     justify-content: center;
     align-items: center;
-    /* grid-template-areas: 
-        "bar twtamt subm";
-    grid-column-gap: 10px; */
 }
 
 #other-handle-search-bar {
