@@ -58,15 +58,30 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     const makeWordCloud = (list) => {
-        WordCloud(wordContainer, { list: list, gridSize: 10,
+        WordCloud(wordContainer, { 
+            list: list, 
+            gridSize: 10,
             weightFactor: 1,
             minSize: "10",
             shape: "star",
             fontFamily: '"Courier New", Courier, monospace',
-            color: '#f0f0c0',
-            backgroundColor: "lightgrey" } );
+            color: '#FFE933',
+            backgroundColor: "lightgrey"
+        } );
     }
 
+    const addHover = () => {
+        wordContainer.addEventListener("mouseover", e => {
+            if (e.target.matches('span')) {
+                e.target.style.color = 'black'
+            } 
+        })
+        wordContainer.addEventListener("mouseout", e => {
+            if (e.target.matches('span')) {
+                e.target.style.color = '#FFE933'
+            }
+        })
+    }
 
 
     const turnWordsIntoCloudArray = (wordCount) => {
@@ -383,6 +398,7 @@ document.addEventListener("DOMContentLoaded", e => {
         document.getElementById("words-div").append(span)
         document.getElementById("words-div").append(deleteButton)
     }
+    addHover()
     submitHandler()
     clickHandler()
 })

@@ -68,6 +68,10 @@ span {
     z-index: -1;
 }
 
+span:hover {
+    color: pink;
+}
+
 #word-name {
     grid-area: name;
     max-width: 100%;
