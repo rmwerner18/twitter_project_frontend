@@ -101,14 +101,18 @@ document.addEventListener("DOMContentLoaded", e => {
         nameDiv.innerHTML = `
             <h3 id="word-header">${wordObject.word}</h3>
         `
-        for (const result of results) {
-            const singleSynDiv = createElementWithId('div', 'single-syn')
-            createDefinitionDivs(result, defDiv)
-            let syns = result.synonyms
-            const ul = document.createElement('ul')
-            singleSynDiv.append(ul)
-            if (syns) {createSynonymsLis(ul, syns)}
-            synDiv.append(singleSynDiv)
+        if (typeof results === "object") {
+            for (const result of results) {
+                const singleSynDiv = createElementWithId('div', 'single-syn')
+                createDefinitionDivs(result, defDiv)
+                let syns = result.synonyms
+                const ul = document.createElement('ul')
+                singleSynDiv.append(ul)
+                if (syns) {createSynonymsLis(ul, syns)}
+                synDiv.append(singleSynDiv)
+            }
+        } else {
+            alert("No definitions available, please select another word.")
         }
         addButton.innerText = "Add word to bank"
         addDiv.append(addButton)
@@ -129,7 +133,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 definitionContainer.innerHTML = ""
                 wordContainer.style.zIndex = '1'
                 wordContainer.style.backgroundColor = 'lightgray'
-                // document.getElementById("handle-search-bar").style.display = 'none'
                 let word = e.target.textContent
                 fetchWordData(word)
             } else if (e.target.matches('#exit-button')) {
@@ -144,10 +147,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 definitionContainer.innerHTML = ""
                 definitionContainer.style.display = "none"
                 layout.id = 'no-def-layout'
-                // wordContainer.style.backgroundColor = ''
-                // if (document.getElementById("handle-search-bar").style.display === 'none') {
-                //     document.getElementById("handle-search-bar").style.display = 'flex'
-                // }
                 wordContainer.style.zIndex = '0'
             }
             else if (e.target.matches('#sign-in-button')) {
@@ -188,7 +187,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 if (e.target.className === "out") {
                     e.target.classList.remove("out")
                     defLayout.id = "no-def-layout"
-                    // wordContainer.style.backgroundColor = 'white'
                     definitionContainer.innerHTML = ""
                 } else {
                     e.target.classList.add("out")
@@ -202,18 +200,6 @@ document.addEventListener("DOMContentLoaded", e => {
                 console.log(e.target)
                 e.target.remove()
             } 
-            // else if (e.target.matches('.word-bank-span')) {
-            //     let layout = document.getElementById('no-def-layout')
-            //     if (layout) {
-            //         layout.id = 'def-layout'
-            //     }
-            //     definitionContainer.innerHTML = ""
-            //     wordContainer.style.zIndex = '1'
-            //     wordContainer.style.backgroundColor = 'lightgray'
-            //     // document.getElementById("handle-search-bar").style.display = 'none'
-            //     let word = e.target.textContent
-            //     fetchWordData(word)
-            // }
         })
     }
 
@@ -333,7 +319,6 @@ document.addEventListener("DOMContentLoaded", e => {
             let words = userObj.words
             const id = userObj.id 
             if (deleteOrAdd === 'delete') {
-                // document.getElementById('words-div').innerHTML = ""
                 words = words.filter(element => element !== word)
                 addToWordBank(words, id)
             } else {
@@ -398,20 +383,6 @@ document.addEventListener("DOMContentLoaded", e => {
         document.getElementById("words-div").append(span)
         document.getElementById("words-div").append(deleteButton)
     }
-
-
-    // const deleteFromWordBank = (word, id) => {
-    //     const options = {
-    //         method: 'PATCH',
-    //         headers: {
-    //             'content-type': 'application/json',
-    //             'accept': 'application/json'
-    //         },   
-    //     }
-
-    //     fetch('http://localhost:3000/users/' + id + `/?words=:${word}`, options)
-    // }
-
     submitHandler()
     clickHandler()
 })
