@@ -1,18 +1,12 @@
 // Tweet from the Clouds // 
 
-Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend
+Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend 
 
-1. Introduction
-2. PreReqs
-3. Instructions
-4. Contributors/Contact Info
-5. License 
+## Introduction
+Our application uses the Twitter API and the WordsAPI as well as the wordcloud2.js library to make a visually appealing data analysis of a User's word selection in their Tweets. We select either the last 10, 15 or 20 Tweets of a User and return their most frequently used words in a word cloud. A User is then able to select words, getting a list of definitions as well as a list of synonyms for these words. If a User chooses to log in, they also have the ability to save a word to their WordBank, being able to call upon the words at a later time. This application was designed with social media managing in mind. Unique word choice in social media posts is extremely important for user engagement. 
 
-
-
-1. Our application uses the Twitter API and the WordsAPI as well as the wordcloud2.js library to make a visually appealing data analysis of a User's word selection in their Tweets. We select either the last 10, 15 or 20 Tweets of a User and return their most frequently used words in a word cloud. A User is then able to select words, getting a list of definitions as well as a list of synonyms for these words. If a User chooses to log in, they also have the ability to save a word to their WordBank, being able to call upon the words at a later time. This application was designed with social media managing in mind. Unique word choice in social media posts is extremely important for user engagement. 
-
-2. A solid understanding of the following concepts would be beneficial to using and expanding on this project: 
+## PreReqs
+A solid understanding of the following concepts would be beneficial to using and expanding on this project: 
     - Ruby on Rails
     - Vanilla JavaScript
     - JQuery
@@ -20,7 +14,7 @@ Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend
     - Twitter API
     - WordsAPI
 
-3. Instructions
+## Instructions
     - For viewing your own Tweets:
         - Locate the sign in field at the top left corner of the page. 
         - After you enter your Twitter handle, you will automatically be shown your TweetCloud of the last 20 Tweets.
@@ -39,7 +33,7 @@ Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend
         - There is no word bank functionality for non signed-in users. 
         - In order or to make a new search, locate the new search bar in the header and repeat the above steps. 
 
-4. Contributors
+## Contributors
    
     - Cody DeMartin (https://github.com/cdemarti/)
         - Contact Information: 
@@ -49,7 +43,7 @@ Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend
         - Contact Information: 
             - rmwerner@umich.edu
 
-5. License 
+## License 
     Copyright (c) 2005-2020 David Heinemeier Hansson
 
     Permission is hereby granted, free of charge, to any person obtaining
