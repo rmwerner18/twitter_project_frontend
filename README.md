@@ -1,6 +1,6 @@
 // Tweet from the Clouds // 
 
-Link to back-end repo: https://github.com/cdemarti/twitter_project_backend
+Link to back-end repo: https://github.com/rmwerner18/twitter_project_backend
 
 1. Introduction
 2. PreReqs
